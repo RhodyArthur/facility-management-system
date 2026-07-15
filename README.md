@@ -54,6 +54,12 @@ ng e2e
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+## Technical decisions
+
+### OpenLayers coordinate transform (`fromLonLat`)
+
+Facility coordinates are stored as plain WGS84 longitude/latitude degrees (the `latitude`/`longitude` fields on `Facility`). OpenLayers' `Map`/`View` render in Web Mercator (`EPSG:3857`) by default, so `FacilityMap` (`src/app/features/facilities/facility-map/facility-map.ts`) explicitly calls `fromLonLat([longitude, latitude])` before using those coordinates as the view center or the marker's `Point` geometry. This is a deliberate choice to keep the domain model in the units the rest of the app (and a real backend) would use, rather than storing projected coordinates — the projection is purely a map-rendering concern, isolated inside `FacilityMap`.
+
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
