@@ -32,3 +32,9 @@ export const FACILITY_STATUS_OPTIONS: { label: string; value: FacilityStatus }[]
   { label: 'Inactive', value: FacilityStatus.Inactive },
   { label: 'Maintenance', value: FacilityStatus.Maintenance },
 ];
+
+export const FACILITY_STATUS_SEVERITY: Record<FacilityStatus, 'success' | 'danger' | 'warn'> = {
+  [FacilityStatus.Active]: 'success',
+  [FacilityStatus.Inactive]: 'danger',
+  [FacilityStatus.Maintenance]: 'warn',
+};
