@@ -1,1 +1,84 @@
-<p>facility-edit works!</p>
+@if (loadError()) {
+  <p-message severity="error">Something went wrong while loading this facility.</p-message>
+} @else if (loading()) {
+  <p class="text-gray-500 dark:text-gray-400">Loading facility…</p>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="save()" class="flex max-w-xl flex-col gap-5">
+    <div class="flex flex-col gap-1">
+      <label for="name" class="text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+      <input pInputText id="name" formControlName="name" />
+      @if (form.controls.name.invalid && form.controls.name.touched) {
+        <small class="text-red-600 dark:text-red-400">Name is required.</small>
+      }
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="type" class="text-sm font-medium text-gray-700 dark:text-gray-300">Type</label>
+      <input pInputText id="type" formControlName="type" />
+      @if (form.controls.type.invalid && form.controls.type.touched) {
+        <small class="text-red-600 dark:text-red-400">Type is required.</small>
+      }
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="status" class="text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+      <p-select
+        inputId="status"
+        [options]="statusOptions"
+        optionLabel="label"
+        optionValue="value"
+        formControlName="status"
+      />
+      @if (form.controls.status.invalid && form.controls.status.touched) {
+        <small class="text-red-600 dark:text-red-400">Status is required.</small>
+      }
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="latitude" class="text-sm font-medium text-gray-700 dark:text-gray-300">Latitude</label>
+      <p-inputnumber
+        inputId="latitude"
+        formControlName="latitude"
+        mode="decimal"
+        [minFractionDigits]="0"
+        [maxFractionDigits]="6"
+      />
+      @if (form.controls.latitude.invalid && form.controls.latitude.touched) {
+        <small class="text-red-600 dark:text-red-400">
+          @if (form.controls.latitude.errors?.['required']) {
+            Latitude is required.
+          } @else {
+            Latitude must be between -90 and 90.
+          }
+        </small>
+      }
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="longitude" class="text-sm font-medium text-gray-700 dark:text-gray-300">Longitude</label>
+      <p-inputnumber
+        inputId="longitude"
+        formControlName="longitude"
+        mode="decimal"
+        [minFractionDigits]="0"
+        [maxFractionDigits]="6"
+      />
+      @if (form.controls.longitude.invalid && form.controls.longitude.touched) {
+        <small class="text-red-600 dark:text-red-400">
+          @if (form.controls.longitude.errors?.['required']) {
+            Longitude is required.
+          } @else {
+            Longitude must be between -180 and 180.
+          }
+        </small>
+      }
+    </div>
+
+    <div class="flex gap-3">
+      <button pButton type="submit" icon="pi pi-check" [loading]="submitting()" [disabled]="submitting()">
+        Save
+      </button>
+      <a pButton text [routerLink]="['/facilities', id()]" [queryParams]="redirectQueryParams()">Cancel</a>
+    </div>
+  </form>
+}
