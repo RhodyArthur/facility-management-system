@@ -1,1 +1,37 @@
-<p>facility-list works!</p>
+<p-table [value]="facilities()" stripedRows  dataKey="id" [rowHover]="true">
+  <ng-template #header>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Last Updated</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-facility>
+    <tr>
+      <td>{{ facility.name }}</td>
+      <td>{{ facility.type }}</td>
+      <td><p-tag [value]="facility.status" [severity]="statusSeverity(facility.status)" /></td>
+      <td>{{ facility.lastUpdated | date: 'medium' }}</td>
+      <td>
+        <a
+          pButton
+          text
+          rounded
+          icon="pi pi-eye"
+          [routerLink]="['/facilities', facility.id]"
+          [attr.aria-label]="'View ' + facility.name"
+        ></a>
+        <a
+          pButton
+          text
+          rounded
+          icon="pi pi-pencil"
+          [routerLink]="['/facilities', facility.id, 'edit']"
+          [attr.aria-label]="'Edit ' + facility.name"
+        ></a>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
