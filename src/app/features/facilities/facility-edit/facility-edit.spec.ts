@@ -117,7 +117,8 @@ describe('FacilityEdit', () => {
     fixture.detectChanges();
 
     expect(component.submitting()).toBe(true);
-    const saveButton: HTMLButtonElement = fixture.nativeElement.querySelector('button[type="submit"]');
+    const saveButton: HTMLButtonElement =
+      fixture.nativeElement.querySelector('button[type="submit"]');
     expect(saveButton.disabled).toBe(true);
 
     // update() reuses the already-loaded in-memory store — no further HTTP request needed.
@@ -125,7 +126,9 @@ describe('FacilityEdit', () => {
     fixture.detectChanges();
 
     expect(component.submitting()).toBe(false);
-    expect(messageService.add).toHaveBeenCalledWith(expect.objectContaining({ severity: 'success' }));
+    expect(messageService.add).toHaveBeenCalledWith(
+      expect.objectContaining({ severity: 'success' }),
+    );
     expect(router.navigate).toHaveBeenCalledWith(
       ['/facilities', 'fac-001'],
       expect.objectContaining({ queryParams: { search: null, status: null } }),

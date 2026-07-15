@@ -13,7 +13,15 @@ import { FacilityMap } from '../facility-map/facility-map';
 
 @Component({
   selector: 'app-facility-detail',
-  imports: [DatePipe, RouterLink, ButtonModule, MessageModule, SkeletonModule, TagModule, FacilityMap],
+  imports: [
+    DatePipe,
+    RouterLink,
+    ButtonModule,
+    MessageModule,
+    SkeletonModule,
+    TagModule,
+    FacilityMap,
+  ],
   templateUrl: './facility-detail.html',
 })
 export class FacilityDetail {
@@ -21,8 +29,6 @@ export class FacilityDetail {
   private readonly destroyRef = inject(DestroyRef);
 
   readonly id = input.required<string>();
-  // Bound automatically from the list's query params via withComponentInputBinding(),
-  // so "Back to list" can restore the search/filter the user came from.
   readonly search = input<string | null>(null);
   readonly status = input<FacilityStatus | null>(null);
 

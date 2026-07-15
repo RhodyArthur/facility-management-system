@@ -32,7 +32,9 @@
     </div>
 
     <div class="flex flex-col gap-1">
-      <label for="status" class="text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+      <label for="status" class="text-sm font-medium text-gray-700 dark:text-gray-300"
+        >Status</label
+      >
       <p-select
         inputId="status"
         [options]="statusOptions"
@@ -46,7 +48,9 @@
     </div>
 
     <div class="flex flex-col gap-1">
-      <label for="latitude" class="text-sm font-medium text-gray-700 dark:text-gray-300">Latitude</label>
+      <label for="latitude" class="text-sm font-medium text-gray-700 dark:text-gray-300"
+        >Latitude</label
+      >
       <p-inputnumber
         inputId="latitude"
         formControlName="latitude"
@@ -66,7 +70,9 @@
     </div>
 
     <div class="flex flex-col gap-1">
-      <label for="longitude" class="text-sm font-medium text-gray-700 dark:text-gray-300">Longitude</label>
+      <label for="longitude" class="text-sm font-medium text-gray-700 dark:text-gray-300"
+        >Longitude</label
+      >
       <p-inputnumber
         inputId="longitude"
         formControlName="longitude"
@@ -96,7 +102,9 @@
       >
         Save
       </button>
-      <a pButton text [routerLink]="['/facilities', id()]" [queryParams]="redirectQueryParams()">Cancel</a>
+      <a pButton text [routerLink]="['/facilities', id()]" [queryParams]="redirectQueryParams()"
+        >Cancel</a
+      >
     </div>
   </form>
 }

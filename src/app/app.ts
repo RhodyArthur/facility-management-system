@@ -6,6 +6,6 @@ import { ToastModule } from 'primeng/toast';
   selector: 'app-root',
   imports: [RouterLink, RouterOutlet, ToastModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {}

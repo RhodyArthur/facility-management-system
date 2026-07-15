@@ -55,8 +55,16 @@ export class FacilityEdit {
     name: this.formBuilder.control('', Validators.required),
     type: this.formBuilder.control('', Validators.required),
     status: this.formBuilder.control(FacilityStatus.Active, Validators.required),
-    latitude: this.formBuilder.control(0, [Validators.required, Validators.min(-90), Validators.max(90)]),
-    longitude: this.formBuilder.control(0, [Validators.required, Validators.min(-180), Validators.max(180)]),
+    latitude: this.formBuilder.control(0, [
+      Validators.required,
+      Validators.min(-90),
+      Validators.max(90),
+    ]),
+    longitude: this.formBuilder.control(0, [
+      Validators.required,
+      Validators.min(-180),
+      Validators.max(180),
+    ]),
   });
 
   constructor() {
@@ -85,7 +93,9 @@ export class FacilityEdit {
             summary: 'Facility updated',
             detail: `${values.name} has been saved.`,
           });
-          this.router.navigate(['/facilities', this.id()], { queryParams: this.redirectQueryParams() });
+          this.router.navigate(['/facilities', this.id()], {
+            queryParams: this.redirectQueryParams(),
+          });
         },
         error: () => {
           this.submitting.set(false);

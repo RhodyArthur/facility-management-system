@@ -5,12 +5,7 @@ export enum FacilityStatus {
 }
 
 export type FacilityType =
-  | 'Warehouse'
-  | 'Retail Outlet'
-  | 'Distribution Center'
-  | 'Office'
-  | 'Clinic'
-  | string;
+  'Warehouse' | 'Retail Outlet' | 'Distribution Center' | 'Office' | 'Clinic' | string;
 
 export interface Facility {
   id: string;

@@ -65,7 +65,6 @@ export class FacilityList {
     );
   });
 
-  /** Carried along to the detail/edit routes so "Back to list" can restore this exact view. */
   protected readonly queryParams = computed(() => ({
     search: this.searchTerm() || null,
     status: this.statusFilter() || null,

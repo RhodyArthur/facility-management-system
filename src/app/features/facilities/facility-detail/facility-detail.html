@@ -29,10 +29,18 @@
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-6">
       <div class="flex gap-3">
-        <a pButton text icon="pi pi-arrow-left" routerLink="/facilities" [queryParams]="backQueryParams()">
+        <a
+          pButton
+          text
+          icon="pi pi-arrow-left"
+          routerLink="/facilities"
+          [queryParams]="backQueryParams()"
+        >
           Back to list
         </a>
-        <a pButton icon="pi pi-pencil" [routerLink]="['edit']" [queryParams]="backQueryParams()">Edit</a>
+        <a pButton icon="pi pi-pencil" [routerLink]="['edit']" [queryParams]="backQueryParams()"
+          >Edit</a
+        >
       </div>
 
       <div class="flex items-center gap-3">
@@ -47,7 +55,9 @@
         </div>
         <div>
           <dt class="text-sm text-gray-500 dark:text-gray-400">Last updated</dt>
-          <dd class="text-gray-900 dark:text-gray-100">{{ facility.lastUpdated | date: 'medium' }}</dd>
+          <dd class="text-gray-900 dark:text-gray-100">
+            {{ facility.lastUpdated | date: 'medium' }}
+          </dd>
         </div>
         <div>
           <dt class="text-sm text-gray-500 dark:text-gray-400">Latitude</dt>

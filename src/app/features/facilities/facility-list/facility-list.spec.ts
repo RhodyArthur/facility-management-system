@@ -47,7 +47,9 @@ const MOCK_FACILITIES: Facility[] = [
 
 /** Reaches past the component's protected signal to drive the status filter without the p-select overlay. */
 function setStatusFilter(component: FacilityList, status: FacilityStatus | null): void {
-  (component as unknown as { statusFilter: { set(value: FacilityStatus | null): void } }).statusFilter.set(status);
+  (
+    component as unknown as { statusFilter: { set(value: FacilityStatus | null): void } }
+  ).statusFilter.set(status);
 }
 
 describe('FacilityList', () => {
@@ -73,12 +75,15 @@ describe('FacilityList', () => {
   });
 
   function rowNames(): string[] {
-    const rows: NodeListOf<HTMLTableRowElement> = fixture.nativeElement.querySelectorAll('tbody tr');
-    return Array.from(rows)
-      // The empty-message row is a single <td colspan="5">, not a data row — skip it.
-      .filter((row) => row.querySelectorAll('td').length > 1)
-      .map((row) => row.querySelector('td')?.textContent?.trim())
-      .filter((name): name is string => !!name);
+    const rows: NodeListOf<HTMLTableRowElement> =
+      fixture.nativeElement.querySelectorAll('tbody tr');
+    return (
+      Array.from(rows)
+        // The empty-message row is a single <td colspan="5">, not a data row — skip it.
+        .filter((row) => row.querySelectorAll('td').length > 1)
+        .map((row) => row.querySelector('td')?.textContent?.trim())
+        .filter((name): name is string => !!name)
+    );
   }
 
   /** Satisfies the pending initial request and waits past the service's simulated latency. */
@@ -102,10 +107,14 @@ describe('FacilityList', () => {
   });
 
   it('shows a retry-capable error message when the request fails', async () => {
-    httpMock.expectOne('data/facilities.json').flush(null, { status: 500, statusText: 'Server Error' });
+    httpMock
+      .expectOne('data/facilities.json')
+      .flush(null, { status: 500, statusText: 'Server Error' });
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Something went wrong while loading facilities.');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Something went wrong while loading facilities.',
+    );
 
     const retryButton: HTMLButtonElement = fixture.nativeElement.querySelector('button');
     retryButton.click();
@@ -163,7 +172,9 @@ describe('FacilityList', () => {
       fixture.detectChanges();
 
       expect(rowNames()).toEqual([]);
-      expect(fixture.nativeElement.textContent).toContain('No facilities match your search or filter.');
+      expect(fixture.nativeElement.textContent).toContain(
+        'No facilities match your search or filter.',
+      );
     });
 
     it('paginates results using the p-table paginator', () => {

@@ -84,8 +84,7 @@ describe('FacilityDetail', () => {
     await flushFacilities();
 
     const map = fixture.debugElement.query(By.directive(FacilityMap))?.componentInstance as
-      | FacilityMap
-      | undefined;
+      FacilityMap | undefined;
 
     expect(map).toBeTruthy();
     expect(map?.latitude()).toBe(5.6037);
@@ -94,10 +93,14 @@ describe('FacilityDetail', () => {
   });
 
   it('shows an error message when the facility fails to load', async () => {
-    httpMock.expectOne('data/facilities.json').flush(null, { status: 500, statusText: 'Server Error' });
+    httpMock
+      .expectOne('data/facilities.json')
+      .flush(null, { status: 500, statusText: 'Server Error' });
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Something went wrong while loading this facility.');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Something went wrong while loading this facility.',
+    );
   });
 
   it('carries the incoming search/status query params into the back and edit links', async () => {
