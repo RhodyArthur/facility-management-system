@@ -1,0 +1,200 @@
+[
+  {
+    "id": "fac-001",
+    "name": "Accra Central Distribution Hub",
+    "type": "Distribution Center",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-07-01T09:15:00.000Z",
+    "latitude": 5.6037,
+    "longitude": -0.187
+  },
+  {
+    "id": "fac-002",
+    "name": "Kumasi Retail Outlet",
+    "type": "Retail Outlet",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-06-28T14:32:00.000Z",
+    "latitude": 6.6885,
+    "longitude": -1.6244
+  },
+  {
+    "id": "fac-003",
+    "name": "Takoradi Port Warehouse",
+    "type": "Warehouse",
+    "status": "MAINTENANCE",
+    "lastUpdated": "2026-07-05T11:00:00.000Z",
+    "latitude": 4.8845,
+    "longitude": -1.7554
+  },
+  {
+    "id": "fac-004",
+    "name": "Tamale Regional Office",
+    "type": "Office",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-06-20T08:45:00.000Z",
+    "latitude": 9.4008,
+    "longitude": -0.8393
+  },
+  {
+    "id": "fac-005",
+    "name": "Cape Coast Community Clinic",
+    "type": "Clinic",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-07-10T16:20:00.000Z",
+    "latitude": 5.1053,
+    "longitude": -1.2466
+  },
+  {
+    "id": "fac-006",
+    "name": "Sunyani Cold Storage Facility",
+    "type": "Cold Storage Facility",
+    "status": "INACTIVE",
+    "lastUpdated": "2026-05-18T10:05:00.000Z",
+    "latitude": 7.3349,
+    "longitude": -2.3123
+  },
+  {
+    "id": "fac-007",
+    "name": "Ho Regional Warehouse",
+    "type": "Warehouse",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-07-12T07:40:00.000Z",
+    "latitude": 6.6,
+    "longitude": 0.4667
+  },
+  {
+    "id": "fac-008",
+    "name": "Koforidua Retail Outlet",
+    "type": "Retail Outlet",
+    "status": "MAINTENANCE",
+    "lastUpdated": "2026-06-30T13:10:00.000Z",
+    "latitude": 6.094,
+    "longitude": -0.2596
+  },
+  {
+    "id": "fac-009",
+    "name": "Bolgatanga Field Office",
+    "type": "Office",
+    "status": "INACTIVE",
+    "lastUpdated": "2026-04-22T09:50:00.000Z",
+    "latitude": 10.7856,
+    "longitude": -0.8514
+  },
+  {
+    "id": "fac-010",
+    "name": "Wa Solar Farm",
+    "type": "Solar Farm",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-07-08T12:25:00.000Z",
+    "latitude": 10.0601,
+    "longitude": -2.5099
+  },
+  {
+    "id": "fac-011",
+    "name": "Techiman Distribution Center",
+    "type": "Distribution Center",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-06-15T15:35:00.000Z",
+    "latitude": 7.5833,
+    "longitude": -1.9333
+  },
+  {
+    "id": "fac-012",
+    "name": "Tema Port Warehouse",
+    "type": "Warehouse",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-07-13T06:55:00.000Z",
+    "latitude": 5.6698,
+    "longitude": -0.0166
+  },
+  {
+    "id": "fac-013",
+    "name": "Obuasi Mine Clinic",
+    "type": "Clinic",
+    "status": "MAINTENANCE",
+    "lastUpdated": "2026-05-30T11:45:00.000Z",
+    "latitude": 6.2025,
+    "longitude": -1.6708
+  },
+  {
+    "id": "fac-014",
+    "name": "Winneba Retail Outlet",
+    "type": "Retail Outlet",
+    "status": "INACTIVE",
+    "lastUpdated": "2026-03-11T10:00:00.000Z",
+    "latitude": 5.351,
+    "longitude": -0.6231
+  },
+  {
+    "id": "fac-015",
+    "name": "Nkawkaw Distribution Center",
+    "type": "Distribution Center",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-07-02T09:00:00.000Z",
+    "latitude": 6.55,
+    "longitude": -0.7667
+  },
+  {
+    "id": "fac-016",
+    "name": "Berekum Regional Office",
+    "type": "Office",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-06-25T13:15:00.000Z",
+    "latitude": 7.4536,
+    "longitude": -2.5843
+  },
+  {
+    "id": "fac-017",
+    "name": "Yendi Community Clinic",
+    "type": "Clinic",
+    "status": "MAINTENANCE",
+    "lastUpdated": "2026-06-05T08:30:00.000Z",
+    "latitude": 9.4427,
+    "longitude": -0.0093
+  },
+  {
+    "id": "fac-018",
+    "name": "Navrongo Warehouse",
+    "type": "Warehouse",
+    "status": "INACTIVE",
+    "lastUpdated": "2026-02-14T10:40:00.000Z",
+    "latitude": 10.8956,
+    "longitude": -1.0925
+  },
+  {
+    "id": "fac-019",
+    "name": "Axim Retail Outlet",
+    "type": "Retail Outlet",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-07-11T15:05:00.000Z",
+    "latitude": 4.8672,
+    "longitude": -2.2417
+  },
+  {
+    "id": "fac-020",
+    "name": "Elmina Solar Farm",
+    "type": "Solar Farm",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-06-18T12:00:00.000Z",
+    "latitude": 5.0844,
+    "longitude": -1.3506
+  },
+  {
+    "id": "fac-021",
+    "name": "Nsawam Cold Storage Facility",
+    "type": "Cold Storage Facility",
+    "status": "MAINTENANCE",
+    "lastUpdated": "2026-07-04T14:50:00.000Z",
+    "latitude": 5.8078,
+    "longitude": -0.3508
+  },
+  {
+    "id": "fac-022",
+    "name": "Hohoe Regional Office",
+    "type": "Office",
+    "status": "ACTIVE",
+    "lastUpdated": "2026-06-22T09:20:00.000Z",
+    "latitude": 7.1519,
+    "longitude": 0.4747
+  }
+]

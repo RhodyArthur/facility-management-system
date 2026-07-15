@@ -1,0 +1,100 @@
+@if (error()) {
+  <p-message severity="error" styleClass="w-full">
+    <div class="flex items-center justify-between gap-4">
+      <span>Something went wrong while loading facilities.</span>
+      <button pButton type="button" text icon="pi pi-refresh" (click)="retry()">Retry</button>
+    </div>
+  </p-message>
+} @else {
+  <div class="flex min-h-0 flex-1 flex-col gap-4">
+    <div class="flex shrink-0 flex-wrap items-center gap-3">
+      <input
+        pInputText
+        type="text"
+        placeholder="Search by name"
+        class="w-64"
+        [value]="searchTerm()"
+        (input)="searchTerm.set($any($event.target).value)"
+      />
+
+      <p-select
+        [options]="statusOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="All statuses"
+        [showClear]="true"
+        class="w-48"
+        [ngModel]="statusFilter()"
+        (ngModelChange)="statusFilter.set($event)"
+      />
+    </div>
+
+    <p-table
+      class="min-h-0 flex-1"
+      [value]="filteredFacilities()"
+      [loading]="loading()"
+      [showLoader]="false"
+      [scrollable]="true"
+      scrollHeight="flex"
+      [paginator]="true"
+      [rows]="10"
+      stripedRows
+      dataKey="id"
+      [rowHover]="true"
+    >
+      <ng-template #header>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Last Updated</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-facility>
+        <tr>
+          <td>{{ facility.name }}</td>
+          <td>{{ facility.type }}</td>
+          <td><p-tag [value]="facility.status" [severity]="statusSeverity(facility.status)" /></td>
+          <td>{{ facility.lastUpdated | date: 'medium' }}</td>
+          <td>
+            <a
+              pButton
+              text
+              rounded
+              icon="pi pi-eye"
+              [routerLink]="['/facilities', facility.id]"
+              [attr.aria-label]="'View ' + facility.name"
+            ></a>
+            <a
+              pButton
+              text
+              rounded
+              icon="pi pi-pencil"
+              [routerLink]="['/facilities', facility.id, 'edit']"
+              [attr.aria-label]="'Edit ' + facility.name"
+            ></a>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #loadingbody>
+        @for (row of skeletonRows; track row) {
+          <tr>
+            <td><p-skeleton /></td>
+            <td><p-skeleton /></td>
+            <td><p-skeleton width="6rem" /></td>
+            <td><p-skeleton width="10rem" /></td>
+            <td><p-skeleton width="4rem" /></td>
+          </tr>
+        }
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5" class="text-center text-gray-500 dark:text-gray-400">
+            No facilities match your search or filter.
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+}
