@@ -5,12 +5,7 @@ export enum FacilityStatus {
 }
 
 export type FacilityType =
-  | 'Warehouse'
-  | 'Retail Outlet'
-  | 'Distribution Center'
-  | 'Office'
-  | 'Clinic'
-  | string;
+  'Warehouse' | 'Retail Outlet' | 'Distribution Center' | 'Office' | 'Clinic' | string;
 
 export interface Facility {
   id: string;
@@ -32,3 +27,9 @@ export const FACILITY_STATUS_OPTIONS: { label: string; value: FacilityStatus }[]
   { label: 'Inactive', value: FacilityStatus.Inactive },
   { label: 'Maintenance', value: FacilityStatus.Maintenance },
 ];
+
+export const FACILITY_STATUS_SEVERITY: Record<FacilityStatus, 'success' | 'danger' | 'warn'> = {
+  [FacilityStatus.Active]: 'success',
+  [FacilityStatus.Inactive]: 'danger',
+  [FacilityStatus.Maintenance]: 'warn',
+};

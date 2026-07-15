@@ -1,1 +1,79 @@
-<p>facility-detail works!</p>
+@if (error()) {
+  <p-message severity="error">Something went wrong while loading this facility.</p-message>
+} @else if (loading()) {
+  <div class="flex flex-col gap-6">
+    <div class="flex max-w-xl flex-col gap-6">
+      <div class="flex gap-3">
+        <p-skeleton width="8rem" height="2.5rem" />
+        <p-skeleton width="6rem" height="2.5rem" />
+      </div>
+
+      <div class="flex items-center gap-3">
+        <p-skeleton width="16rem" height="2rem" />
+        <p-skeleton width="5rem" height="1.5rem" class="rounded-full" />
+      </div>
+
+      <div class="flex flex-wrap gap-6">
+        @for (field of skeletonFields; track field) {
+          <div class="flex flex-col gap-2">
+            <p-skeleton width="4rem" height="0.875rem" />
+            <p-skeleton width="8rem" height="1.25rem" />
+          </div>
+        }
+      </div>
+    </div>
+
+    <p-skeleton width="100%" height="24rem" />
+  </div>
+} @else if (facility(); as facility) {
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6">
+      <div class="flex gap-3">
+        <a
+          pButton
+          text
+          icon="pi pi-arrow-left"
+          routerLink="/facilities"
+          [queryParams]="backQueryParams()"
+        >
+          Back to list
+        </a>
+        <a pButton icon="pi pi-pencil" [routerLink]="['edit']" [queryParams]="backQueryParams()"
+          >Edit</a
+        >
+      </div>
+
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">{{ facility.name }}</h1>
+        <p-tag [value]="facility.status" [severity]="statusSeverity(facility.status)" />
+      </div>
+
+      <dl class="flex flex-wrap gap-6">
+        <div>
+          <dt class="text-sm text-gray-500 dark:text-gray-400">Type</dt>
+          <dd class="text-gray-900 dark:text-gray-100">{{ facility.type }}</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500 dark:text-gray-400">Last updated</dt>
+          <dd class="text-gray-900 dark:text-gray-100">
+            {{ facility.lastUpdated | date: 'medium' }}
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500 dark:text-gray-400">Latitude</dt>
+          <dd class="text-gray-900 dark:text-gray-100">{{ facility.latitude }}</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500 dark:text-gray-400">Longitude</dt>
+          <dd class="text-gray-900 dark:text-gray-100">{{ facility.longitude }}</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500 dark:text-gray-400">ID</dt>
+          <dd class="text-gray-900 dark:text-gray-100">{{ facility.id }}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <app-facility-map [latitude]="facility.latitude" [longitude]="facility.longitude" />
+  </div>
+}
