@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
 
 import { FACILITY_STATUS_SEVERITY, Facility, FacilityStatus } from '../../../core/models/facility';
@@ -12,7 +13,7 @@ import { FacilityMap } from '../facility-map/facility-map';
 
 @Component({
   selector: 'app-facility-detail',
-  imports: [DatePipe, RouterLink, ButtonModule, MessageModule, TagModule, FacilityMap],
+  imports: [DatePipe, RouterLink, ButtonModule, MessageModule, SkeletonModule, TagModule, FacilityMap],
   templateUrl: './facility-detail.html',
 })
 export class FacilityDetail {
@@ -24,6 +25,8 @@ export class FacilityDetail {
   // so "Back to list" can restore the search/filter the user came from.
   readonly search = input<string | null>(null);
   readonly status = input<FacilityStatus | null>(null);
+
+  protected readonly skeletonFields = [0, 1, 2, 3, 4];
 
   protected readonly facility = signal<Facility | null>(null);
   protected readonly loading = signal(true);

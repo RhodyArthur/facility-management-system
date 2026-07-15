@@ -8,6 +8,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
+import { SkeletonModule } from 'primeng/skeleton';
 
 import { FACILITY_STATUS_OPTIONS, FacilityStatus } from '../../../core/models/facility';
 import { FacilityService } from '../../../core/services/facility.service';
@@ -22,6 +23,7 @@ import { FacilityService } from '../../../core/services/facility.service';
     InputTextModule,
     MessageModule,
     SelectModule,
+    SkeletonModule,
   ],
   templateUrl: './facility-edit.html',
 })
@@ -37,6 +39,7 @@ export class FacilityEdit {
   readonly status = input<FacilityStatus | null>(null);
 
   protected readonly statusOptions = FACILITY_STATUS_OPTIONS;
+  protected readonly skeletonFields = [0, 1, 2, 3, 4];
 
   protected readonly loading = signal(true);
   protected readonly loadError = signal(false);
