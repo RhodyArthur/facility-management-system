@@ -1,15 +1,17 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 
-import { FACILITY_STATUS_OPTIONS, FacilityStatus } from '../../../core/models/facility';
+import { FACILITY_STATUS_OPTIONS, Facility, FacilityStatus } from '../../../core/models/facility';
 import { FacilityService } from '../../../core/services/facility.service';
 
 const STATUS_SEVERITY: Record<FacilityStatus, 'success' | 'danger' | 'warn'> = {
@@ -26,7 +28,9 @@ const STATUS_SEVERITY: Record<FacilityStatus, 'success' | 'danger' | 'warn'> = {
     RouterLink,
     ButtonModule,
     InputTextModule,
+    MessageModule,
     SelectModule,
+    SkeletonModule,
     TableModule,
     TagModule,
   ],
@@ -34,12 +38,17 @@ const STATUS_SEVERITY: Record<FacilityStatus, 'success' | 'danger' | 'warn'> = {
 })
 export class FacilityList {
   private readonly facilityService = inject(FacilityService);
-
-  private readonly facilities = toSignal(this.facilityService.getAll(), { initialValue: [] });
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly statusOptions = FACILITY_STATUS_OPTIONS;
+  protected readonly skeletonRows = [0, 1, 2, 3, 4];
+
   protected readonly searchTerm = signal('');
   protected readonly statusFilter = signal<FacilityStatus | null>(null);
+
+  private readonly facilities = signal<Facility[]>([]);
+  protected readonly loading = signal(true);
+  protected readonly error = signal(false);
 
   protected readonly filteredFacilities = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
@@ -52,7 +61,34 @@ export class FacilityList {
     );
   });
 
+  constructor() {
+    this.loadFacilities();
+  }
+
+  protected retry(): void {
+    this.loadFacilities();
+  }
+
   protected statusSeverity(status: FacilityStatus): 'success' | 'danger' | 'warn' {
     return STATUS_SEVERITY[status];
+  }
+
+  private loadFacilities(): void {
+    this.loading.set(true);
+    this.error.set(false);
+
+    this.facilityService
+      .getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (facilities) => {
+          this.facilities.set(facilities);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.error.set(true);
+          this.loading.set(false);
+        },
+      });
   }
 }

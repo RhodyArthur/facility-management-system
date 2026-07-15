@@ -66,12 +66,6 @@ describe('FacilityList', () => {
     fixture = TestBed.createComponent(FacilityList);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
-    httpMock.expectOne('data/facilities.json').flush(MOCK_FACILITIES);
-    // FacilityService adds ~600ms of simulated latency after the HTTP response,
-    // which whenStable() doesn't track in this zoneless app — wait past it explicitly.
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    fixture.detectChanges();
   });
 
   afterEach(() => {
@@ -87,52 +81,94 @@ describe('FacilityList', () => {
       .filter((name): name is string => !!name);
   }
 
+  /** Satisfies the pending initial request and waits past the service's simulated latency. */
+  async function flushInitialLoad(facilities: Facility[] = MOCK_FACILITIES): Promise<void> {
+    httpMock.expectOne('data/facilities.json').flush(facilities);
+    // FacilityService adds ~600ms of simulated latency after the HTTP response,
+    // which whenStable() doesn't track in this zoneless app — wait past it explicitly.
+    await new Promise((resolve) => setTimeout(resolve, 700));
+    fixture.detectChanges();
+  }
+
   it('should create', () => {
     expect(component).toBeTruthy();
+    httpMock.expectOne('data/facilities.json').flush(MOCK_FACILITIES);
   });
 
-  it('renders every facility when no filters are applied', () => {
-    expect(rowNames()).toEqual([
-      'Accra Central Distribution Hub',
-      'Kumasi Retail Outlet',
-      'Takoradi Port Warehouse',
-      'Winneba Retail Outlet',
-    ]);
+  it('shows a loading skeleton while the initial request is pending', async () => {
+    expect(fixture.nativeElement.querySelectorAll('p-skeleton').length).toBeGreaterThan(0);
+
+    await flushInitialLoad();
   });
 
-  it('filters by name, case-insensitively', () => {
-    const input: HTMLInputElement = fixture.nativeElement.querySelector('input[pInputText]');
-    input.value = 'retail';
-    input.dispatchEvent(new Event('input'));
+  it('shows a retry-capable error message when the request fails', async () => {
+    httpMock.expectOne('data/facilities.json').flush(null, { status: 500, statusText: 'Server Error' });
     fixture.detectChanges();
 
-    expect(rowNames()).toEqual(['Kumasi Retail Outlet', 'Winneba Retail Outlet']);
-  });
+    expect(fixture.nativeElement.textContent).toContain('Something went wrong while loading facilities.');
 
-  it('filters by status', () => {
-    setStatusFilter(component, FacilityStatus.Active);
+    const retryButton: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    retryButton.click();
     fixture.detectChanges();
 
-    expect(rowNames()).toEqual(['Accra Central Distribution Hub', 'Kumasi Retail Outlet']);
+    await flushInitialLoad();
+
+    expect(rowNames().length).toBe(MOCK_FACILITIES.length);
   });
 
-  it('combines name search and status filter', () => {
-    setStatusFilter(component, FacilityStatus.Active);
-    const input: HTMLInputElement = fixture.nativeElement.querySelector('input[pInputText]');
-    input.value = 'kumasi';
-    input.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+  describe('once facilities are loaded', () => {
+    beforeEach(async () => {
+      await flushInitialLoad();
+    });
 
-    expect(rowNames()).toEqual(['Kumasi Retail Outlet']);
-  });
+    it('renders every facility when no filters are applied', () => {
+      expect(rowNames()).toEqual([
+        'Accra Central Distribution Hub',
+        'Kumasi Retail Outlet',
+        'Takoradi Port Warehouse',
+        'Winneba Retail Outlet',
+      ]);
+    });
 
-  it('shows an empty message when nothing matches', () => {
-    const input: HTMLInputElement = fixture.nativeElement.querySelector('input[pInputText]');
-    input.value = 'nonexistent facility';
-    input.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+    it('filters by name, case-insensitively', () => {
+      const input: HTMLInputElement = fixture.nativeElement.querySelector('input[pInputText]');
+      input.value = 'retail';
+      input.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
 
-    expect(rowNames()).toEqual([]);
-    expect(fixture.nativeElement.textContent).toContain('No facilities match your search or filter.');
+      expect(rowNames()).toEqual(['Kumasi Retail Outlet', 'Winneba Retail Outlet']);
+    });
+
+    it('filters by status', () => {
+      setStatusFilter(component, FacilityStatus.Active);
+      fixture.detectChanges();
+
+      expect(rowNames()).toEqual(['Accra Central Distribution Hub', 'Kumasi Retail Outlet']);
+    });
+
+    it('combines name search and status filter', () => {
+      setStatusFilter(component, FacilityStatus.Active);
+      const input: HTMLInputElement = fixture.nativeElement.querySelector('input[pInputText]');
+      input.value = 'kumasi';
+      input.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+
+      expect(rowNames()).toEqual(['Kumasi Retail Outlet']);
+    });
+
+    it('shows an empty message when nothing matches', () => {
+      const input: HTMLInputElement = fixture.nativeElement.querySelector('input[pInputText]');
+      input.value = 'nonexistent facility';
+      input.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+
+      expect(rowNames()).toEqual([]);
+      expect(fixture.nativeElement.textContent).toContain('No facilities match your search or filter.');
+    });
+
+    it('paginates results using the p-table paginator', () => {
+      const paginator = fixture.nativeElement.querySelector('.p-paginator');
+      expect(paginator).toBeTruthy();
+    });
   });
 });
