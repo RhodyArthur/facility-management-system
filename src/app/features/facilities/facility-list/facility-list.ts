@@ -84,7 +84,14 @@ export class FacilityList {
   }
 
   protected retry(): void {
-    this.loadFacilities();
+    this.router
+      .navigate([], {
+        relativeTo: this.route,
+        queryParams: { simulateError: null },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      })
+      .then(() => this.loadFacilities());
   }
 
   protected statusSeverity(status: FacilityStatus): 'success' | 'danger' | 'warn' {

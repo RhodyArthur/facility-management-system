@@ -118,6 +118,9 @@ describe('FacilityList', () => {
 
     const retryButton: HTMLButtonElement = fixture.nativeElement.querySelector('button');
     retryButton.click();
+    // retry() clears ?simulateError first via router.navigate(), then reloads once
+    // that resolves — let the navigation microtask settle before the new GET fires.
+    await fixture.whenStable();
     fixture.detectChanges();
 
     await flushInitialLoad();
