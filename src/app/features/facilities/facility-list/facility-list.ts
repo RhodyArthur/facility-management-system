@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
@@ -11,14 +11,13 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 
-import { FACILITY_STATUS_OPTIONS, Facility, FacilityStatus } from '../../../core/models/facility';
+import {
+  FACILITY_STATUS_OPTIONS,
+  FACILITY_STATUS_SEVERITY,
+  Facility,
+  FacilityStatus,
+} from '../../../core/models/facility';
 import { FacilityService } from '../../../core/services/facility.service';
-
-const STATUS_SEVERITY: Record<FacilityStatus, 'success' | 'danger' | 'warn'> = {
-  [FacilityStatus.Active]: 'success',
-  [FacilityStatus.Inactive]: 'danger',
-  [FacilityStatus.Maintenance]: 'warn',
-};
 
 @Component({
   selector: 'app-facility-list',
@@ -40,12 +39,16 @@ const STATUS_SEVERITY: Record<FacilityStatus, 'success' | 'danger' | 'warn'> = {
 export class FacilityList {
   private readonly facilityService = inject(FacilityService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   protected readonly statusOptions = FACILITY_STATUS_OPTIONS;
   protected readonly skeletonRows = [0, 1, 2, 3, 4];
 
-  protected readonly searchTerm = signal('');
-  protected readonly statusFilter = signal<FacilityStatus | null>(null);
+  protected readonly searchTerm = signal(this.route.snapshot.queryParamMap.get('search') ?? '');
+  protected readonly statusFilter = signal<FacilityStatus | null>(
+    this.route.snapshot.queryParamMap.get('status') as FacilityStatus | null,
+  );
 
   private readonly facilities = signal<Facility[]>([]);
   protected readonly loading = signal(true);
@@ -62,8 +65,23 @@ export class FacilityList {
     );
   });
 
+  /** Carried along to the detail/edit routes so "Back to list" can restore this exact view. */
+  protected readonly queryParams = computed(() => ({
+    search: this.searchTerm() || null,
+    status: this.statusFilter() || null,
+  }));
+
   constructor() {
     this.loadFacilities();
+
+    effect(() => {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: this.queryParams(),
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
+    });
   }
 
   protected retry(): void {
@@ -71,7 +89,7 @@ export class FacilityList {
   }
 
   protected statusSeverity(status: FacilityStatus): 'success' | 'danger' | 'warn' {
-    return STATUS_SEVERITY[status];
+    return FACILITY_STATUS_SEVERITY[status];
   }
 
   private loadFacilities(): void {

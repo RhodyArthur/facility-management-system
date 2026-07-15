@@ -64,6 +64,7 @@
               rounded
               icon="pi pi-eye"
               [routerLink]="['/facilities', facility.id]"
+              [queryParams]="queryParams()"
               [attr.aria-label]="'View ' + facility.name"
             ></a>
             <a
@@ -72,6 +73,7 @@
               rounded
               icon="pi pi-pencil"
               [routerLink]="['/facilities', facility.id, 'edit']"
+              [queryParams]="queryParams()"
               [attr.aria-label]="'Edit ' + facility.name"
             ></a>
           </td>
