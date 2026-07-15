@@ -1,9 +1,95 @@
-import { Component } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { SelectModule } from 'primeng/select';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+
+import { FACILITY_STATUS_OPTIONS, Facility, FacilityStatus } from '../../../core/models/facility';
+import { FacilityService } from '../../../core/services/facility.service';
+
+const STATUS_SEVERITY: Record<FacilityStatus, 'success' | 'danger' | 'warn'> = {
+  [FacilityStatus.Active]: 'success',
+  [FacilityStatus.Inactive]: 'danger',
+  [FacilityStatus.Maintenance]: 'warn',
+};
 
 @Component({
   selector: 'app-facility-list',
-  imports: [],
+  host: { class: 'flex min-h-0 flex-1 flex-col' },
+  imports: [
+    DatePipe,
+    FormsModule,
+    RouterLink,
+    ButtonModule,
+    InputTextModule,
+    MessageModule,
+    SelectModule,
+    SkeletonModule,
+    TableModule,
+    TagModule,
+  ],
   templateUrl: './facility-list.html',
-  styleUrl: './facility-list.css',
 })
-export class FacilityList {}
+export class FacilityList {
+  private readonly facilityService = inject(FacilityService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  protected readonly statusOptions = FACILITY_STATUS_OPTIONS;
+  protected readonly skeletonRows = [0, 1, 2, 3, 4];
+
+  protected readonly searchTerm = signal('');
+  protected readonly statusFilter = signal<FacilityStatus | null>(null);
+
+  private readonly facilities = signal<Facility[]>([]);
+  protected readonly loading = signal(true);
+  protected readonly error = signal(false);
+
+  protected readonly filteredFacilities = computed(() => {
+    const term = this.searchTerm().trim().toLowerCase();
+    const status = this.statusFilter();
+
+    return this.facilities().filter(
+      (facility) =>
+        (!term || facility.name.toLowerCase().includes(term)) &&
+        (!status || facility.status === status),
+    );
+  });
+
+  constructor() {
+    this.loadFacilities();
+  }
+
+  protected retry(): void {
+    this.loadFacilities();
+  }
+
+  protected statusSeverity(status: FacilityStatus): 'success' | 'danger' | 'warn' {
+    return STATUS_SEVERITY[status];
+  }
+
+  private loadFacilities(): void {
+    this.loading.set(true);
+    this.error.set(false);
+
+    this.facilityService
+      .getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (facilities) => {
+          this.facilities.set(facilities);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.error.set(true);
+          this.loading.set(false);
+        },
+      });
+  }
+}
