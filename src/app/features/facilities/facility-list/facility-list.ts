@@ -22,6 +22,7 @@ const STATUS_SEVERITY: Record<FacilityStatus, 'success' | 'danger' | 'warn'> = {
 
 @Component({
   selector: 'app-facility-list',
+  host: { class: 'flex min-h-0 flex-1 flex-col' },
   imports: [
     DatePipe,
     FormsModule,
