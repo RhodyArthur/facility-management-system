@@ -47,7 +47,9 @@ describe('FacilityService', () => {
   function flushFacilities(): void {
     // Flush a fresh copy each time — the service caches its own store, and a
     // shared array reference here would let one test's mutations leak into another.
-    httpMock.expectOne('data/facilities.json').flush(MOCK_FACILITIES.map((facility) => ({ ...facility })));
+    httpMock
+      .expectOne('data/facilities.json')
+      .flush(MOCK_FACILITIES.map((facility) => ({ ...facility })));
   }
 
   it('getAll() resolves with every facility from the dataset', async () => {
