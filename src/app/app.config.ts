@@ -4,6 +4,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 
+import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 
@@ -14,8 +15,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     providePrimeNG({
       theme: {
-        preset: Aura
-      }
-    })
-  ]
+        preset: Aura,
+      },
+    }),
+    MessageService,
+  ],
 };
