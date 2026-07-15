@@ -1,4 +1,26 @@
-<p-table [value]="facilities()" stripedRows  dataKey="id" [rowHover]="true">
+<div class="mb-4 flex flex-wrap items-center gap-3">
+  <input
+    pInputText
+    type="text"
+    placeholder="Search by name"
+    class="w-64"
+    [value]="searchTerm()"
+    (input)="searchTerm.set($any($event.target).value)"
+  />
+
+  <p-select
+    [options]="statusOptions"
+    optionLabel="label"
+    optionValue="value"
+    placeholder="All statuses"
+    [showClear]="true"
+    class="w-48"
+    [ngModel]="statusFilter()"
+    (ngModelChange)="statusFilter.set($event)"
+  />
+</div>
+
+<p-table [value]="filteredFacilities()" stripedRows dataKey="id" [rowHover]="true">
   <ng-template #header>
     <tr>
       <th>Name</th>
@@ -31,6 +53,13 @@
           [routerLink]="['/facilities', facility.id, 'edit']"
           [attr.aria-label]="'Edit ' + facility.name"
         ></a>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="5" class="text-center text-gray-500 dark:text-gray-400">
+        No facilities match your search or filter.
       </td>
     </tr>
   </ng-template>
